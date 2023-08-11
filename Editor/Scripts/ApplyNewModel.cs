@@ -7,14 +7,14 @@ using UnityEditor;
 
 public class ReassignArmature: EditorWindow
 {
-	private int MeshCount = 0;
+	private int MeshCount = 1;
 	private List<SkinnedMeshRenderer> Meshes = new List<SkinnedMeshRenderer>();
 	private Transform NewArmature;
 	private bool IncludeInactiveBones = true;
-	private string RootBoneName = "Hips";
+	private string RootBoneName = "J_Bip_C_Hips";
 	private string Status = "Waiting for input.";
 
-	[MenuItem("Rhea/ReassignArmature")]
+	[MenuItem("Mesh+Bones/Other/Reassign armature using mesh weights based on names")]
 	static void Init()
 	{
 		ReassignArmature window = EditorWindow.GetWindow(typeof(ReassignArmature)) as ReassignArmature;
@@ -22,9 +22,13 @@ public class ReassignArmature: EditorWindow
 	}
 	void OnGUI()
 	{
-		GUILayout.Label("Reassigns Mesh weights to the selected Armature based on object names. (Might want to create a proper backup!!)");
+		GUILayout.Label(" ");
+		GUILayout.Label("Reassigns Mesh weights to the selected Armature based on object names.");
+		GUILayout.Label("");
+		GUILayout.Label("[WARNING] Overwrites data with no undo.");
+		GUILayout.Label("");
 
-		this.MeshCount = EditorGUILayout.IntField("Mesh count: ", this.MeshCount);
+		this.MeshCount = EditorGUILayout.IntField("SkinnedMesh count: ", this.MeshCount);
 		while( this.MeshCount > this.Meshes.Count )
 			this.Meshes.Add(null);
 		while( this.MeshCount < this.Meshes.Count )
@@ -32,11 +36,13 @@ public class ReassignArmature: EditorWindow
 
 		for( int i = 0; i < this.MeshCount; i++ )
 		{
-			this.Meshes[i] = EditorGUILayout.ObjectField($"Mesh {i}", this.Meshes[i], typeof(SkinnedMeshRenderer), true) as SkinnedMeshRenderer;
+			this.Meshes[i] = EditorGUILayout.ObjectField($"SkinnedMesh {i}", this.Meshes[i], typeof(SkinnedMeshRenderer), true) as SkinnedMeshRenderer;
 		}
 
-		this.NewArmature = EditorGUILayout.ObjectField("New Armature that will be assigned to the models", this.NewArmature, typeof(Transform), true) as Transform;
+		this.NewArmature = EditorGUILayout.ObjectField("Attach above to this Armature", this.NewArmature, typeof(Transform), true) as Transform;
+
 		this.RootBoneName = EditorGUILayout.TextField("Root Bone Name", this.RootBoneName);
+
 		this.IncludeInactiveBones = EditorGUILayout.Toggle("Include inactive bones", this.IncludeInactiveBones);
 
 		if( GUILayout.Button("Execute") )
