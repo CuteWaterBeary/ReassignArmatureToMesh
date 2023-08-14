@@ -14,7 +14,7 @@ public class ReassignArmature: EditorWindow
 	private string RootBoneName = "J_Bip_C_Hips";
 	private string Status = "Waiting for input.";
 
-	[MenuItem("Mesh+Bones/Other/Reassign armature using mesh weights based on names")]
+	[MenuItem("Mesh+Bones/Armature/Reassign armature using mesh weights based on names")]
 	static void Init()
 	{
 		ReassignArmature window = EditorWindow.GetWindow(typeof(ReassignArmature)) as ReassignArmature;
